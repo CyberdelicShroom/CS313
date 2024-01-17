@@ -17,11 +17,6 @@ public class Server implements Runnable {
     private ExecutorService threadPool;
     private ServerSocket server;
 
-//    public Server() {
-//        connections = new ArrayList<>();
-//        done = false;
-//    }
-
     @Override
     public void run() {
         try {
@@ -53,6 +48,9 @@ public class Server implements Runnable {
             if (ch.username.equals(recipient)) {
                 ch.whisperMessage(whisper, sender);
             }
+            if (ch.username.equals(sender)) {
+                ch.whisperMessage(whisper, sender);
+            }
         }
     }
 
@@ -75,8 +73,6 @@ public class Server implements Runnable {
         private Socket client;
         private DataInputStream in;
         private DataOutputStream out;
-        //private BufferedReader in;
-        //private PrintWriter out;
         private String username;
 
         public ConnectionHandler(Socket client) {
@@ -104,9 +100,9 @@ public class Server implements Runnable {
                     System.out.println(username);
                     out.writeUTF(username);
                 }
-//                System.out.println();
-//
-//                out.writeUTF("\n ");
+                System.out.println();
+
+                out.writeUTF("");
             } catch (IOException e) {
                 
             }
@@ -115,13 +111,10 @@ public class Server implements Runnable {
         @Override
         public void run() {
             try {
-                //out = new PrintWriter(client.getOutputStream(), true); // send to client
                 out = new DataOutputStream(client.getOutputStream());
                 in = new DataInputStream(client.getInputStream());
-                //in = new BufferedReader(new InputStreamReader(client.getInputStream())); // recv from client
-                //out.writeUTF("Enter a unique username: ");
                 username = in.readUTF();
-                System.out.println("USERNAME HERE: " + username);
+                
                 if (username != null) {
                     if (clients.contains(username)) {
                         username = requestUniqueName(username, in);

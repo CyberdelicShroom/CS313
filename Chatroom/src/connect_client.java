@@ -136,7 +136,8 @@ public class connect_client extends javax.swing.JFrame {
             String msgout_name = username;
             out.writeUTF(msgout_name);
             String msgin_welcome = in.readUTF();
-            message_area.setText(message_area.getText() + "\n Server : " + msgin_welcome);
+//            message_area.setText(message_area.getText() + "\n " + msgin_welcome);
+            message_area.setText(msgin_welcome);
             InputHandler inHandler = new InputHandler();
             Thread t = new Thread(inHandler);
             t.start();
@@ -175,7 +176,7 @@ public class connect_client extends javax.swing.JFrame {
             try {
                 String msgin = "";
                 while ((msgin = in.readUTF()) != null) {
-                    message_area.setText(message_area.getText() + "\n " + msgin);
+                    message_area.setText(message_area.getText() + "\n" + msgin);
                 }
 //                BufferedReader inReader = new BufferedReader(new InputStreamReader(System.in));
 //                while (!done) {
