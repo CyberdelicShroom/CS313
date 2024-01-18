@@ -153,6 +153,9 @@ public class connect_client extends javax.swing.JFrame {
             String msg = message_text.getText();
             out.writeUTF(msg);
             message_text.setText("");
+            if(msg.equals("/quit")){
+                System.exit(0);
+            }
         } catch(IOException e) {
         
         }
