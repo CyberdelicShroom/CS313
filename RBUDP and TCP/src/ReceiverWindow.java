@@ -1,4 +1,5 @@
 
+import java.awt.EventQueue;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -62,11 +63,12 @@ public class ReceiverWindow extends javax.swing.JFrame {
                         .addComponent(fileReceivedLabel))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(90, 90, 90)
-                        .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(148, 148, 148)
-                        .addComponent(jLabel2)))
+                        .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(104, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(148, 148, 148)
+                .addComponent(jLabel2)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -83,16 +85,6 @@ public class ReceiverWindow extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    
-//    int port = Integer.parseInt(portTextField.getText());
-//    String fileSaveDirectory = "./";
-//    try {
-//        receiveAndCreate(port, fileSaveDirectory);
-//    } catch (IOException e) {
-//        e.printStackTrace();
-//    }
-//
-//    fileReceivedLabel.setVisible(true);
     
     public static void receiveAndCreate(int port, String fileSaveDirectory) throws IOException {
         // Create socket，set the address and create the file to send
@@ -126,6 +118,7 @@ public class ReceiverWindow extends javax.swing.JFrame {
         // Store sequence number
         int sequenceNumber = 0;
         int lastSequenceNumber = 0;
+        progressBar.setValue(0);
         progressBar.setStringPainted(true);
         progressBar.setMaximum(fileSize);
         
@@ -235,13 +228,16 @@ public class ReceiverWindow extends javax.swing.JFrame {
             }
         });
         String fileSaveDirectory = "./";
-        try {
-            receiveAndCreate(5000, fileSaveDirectory);
-            fileReceivedLabel.setVisible(true);
-  
-        } catch (IOException e) {
-            e.printStackTrace();
+        while(true){
+            System.out.println("Waiting to receive next file.");
+            try {
+                receiveAndCreate(5000, fileSaveDirectory);
+                fileReceivedLabel.setVisible(true);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
