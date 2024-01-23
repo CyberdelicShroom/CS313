@@ -13,7 +13,7 @@ import java.nio.ByteBuffer;
  * @author Keaglox
  */
 public class ReceiverWindow extends javax.swing.JFrame {
-
+    
     /**
      * Creates new form ReceiverWindow
      */
@@ -39,7 +39,7 @@ public class ReceiverWindow extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jLabel1.setText("Receiver");
+        jLabel1.setText("RBUDP Receiver");
 
         fileReceivedLabel.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
         fileReceivedLabel.setText("File Received!");
@@ -56,19 +56,18 @@ public class ReceiverWindow extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(169, 169, 169)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(158, 158, 158)
                         .addComponent(fileReceivedLabel))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(90, 90, 90)
-                        .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(148, 148, 148)
+                        .addComponent(jLabel2))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(126, 126, 126)
+                        .addComponent(jLabel1)))
                 .addContainerGap(104, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(148, 148, 148)
-                .addComponent(jLabel2)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -86,7 +85,7 @@ public class ReceiverWindow extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     
-    public static void receiveAndCreate(int port, String fileSaveDirectory) throws IOException {
+    public static void receiveAndCreate(int port) throws IOException {
         // Create socket，set the address and create the file to send
         DatagramSocket socket = new DatagramSocket(port);
         InetAddress address;
@@ -98,6 +97,7 @@ public class ReceiverWindow extends javax.swing.JFrame {
         byte[] data = receiveFileNamePacket.getData();
         String fileName = new String(data, 0, receiveFileNamePacket.getLength());
 
+        String fileSaveDirectory = "./";
         File file = new File(fileSaveDirectory + "\\" + fileName);
         FileOutputStream outputFile = new FileOutputStream(file); // The stream through which we write the file content
 
@@ -118,6 +118,7 @@ public class ReceiverWindow extends javax.swing.JFrame {
         // Store sequence number
         int sequenceNumber = 0;
         int lastSequenceNumber = 0;
+        
         progressBar.setValue(0);
         progressBar.setStringPainted(true);
         progressBar.setMaximum(fileSize);
@@ -227,11 +228,11 @@ public class ReceiverWindow extends javax.swing.JFrame {
                 new ReceiverWindow().setVisible(true);
             }
         });
-        String fileSaveDirectory = "./";
+        
         while(true){
-            System.out.println("Waiting to receive next file.");
+            System.out.println("Waiting to receive next file...");
             try {
-                receiveAndCreate(5000, fileSaveDirectory);
+                receiveAndCreate(5000);
                 fileReceivedLabel.setVisible(true);
             } catch (IOException e) {
                 e.printStackTrace();
