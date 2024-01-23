@@ -11,7 +11,10 @@ import java.util.Vector;
 import javax.swing.JFileChooser;
 
 public class SenderWindow extends javax.swing.JFrame {
-
+    
+    static String host;
+    static int port;
+    static Boolean flag = false;
     /**
      * Creates new form SenderWindow
      */
@@ -33,6 +36,8 @@ public class SenderWindow extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         portField = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
+        progressBar = new javax.swing.JProgressBar();
+        jLabel4 = new javax.swing.JLabel();
         chooseFileButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -46,10 +51,12 @@ public class SenderWindow extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel3.setText("Enter Port:");
 
+        jLabel4.setText("Transfer progress:");
+
         chooseFileButton.setText("Select File");
-        chooseFileButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                chooseFileButtonMouseClicked(evt);
+        chooseFileButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chooseFileButtonActionPerformed(evt);
             }
         });
 
@@ -58,26 +65,32 @@ public class SenderWindow extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(157, 157, 157))
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jLabel4)
+                .addGap(195, 195, 195))
             .addGroup(layout.createSequentialGroup()
+                .addGap(118, 118, 118)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(118, 118, 118)
+                        .addGap(48, 48, 48)
+                        .addComponent(jLabel1))
+                    .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel3))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(hostAddressField, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(portField, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(192, 192, 192)
-                        .addComponent(chooseFileButton, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(portField, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(31, 31, 31)
+                                .addComponent(jLabel3)))
+                        .addGap(8, 8, 8)))
                 .addContainerGap(118, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(chooseFileButton, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(197, 197, 197))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -92,23 +105,28 @@ public class SenderWindow extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(portField)
                     .addComponent(hostAddressField, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(chooseFileButton, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(chooseFileButton, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(14, 14, 14))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void chooseFileButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_chooseFileButtonMouseClicked
-        String host = hostAddressField.getText();
-        int port = Integer.parseInt(portField.getText());
-        try {
-            createAndSend(host, port);
-        } catch(IOException e) {
-            e.printStackTrace();
-        }
-    }//GEN-LAST:event_chooseFileButtonMouseClicked
+    private void chooseFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chooseFileButtonActionPerformed
+        host = hostAddressField.getText();
+        port = Integer.parseInt(portField.getText());
+        flag = true;
+//        try {
+//            createAndSend(host, port);
+//        } catch(IOException e) {
+//            e.printStackTrace();
+//        }
+    }//GEN-LAST:event_chooseFileButtonActionPerformed
     
     public static void createAndSend(String hostName, int port) throws IOException {
         System.out.println("Sending the file");
@@ -207,7 +225,11 @@ public class SenderWindow extends javax.swing.JFrame {
 
                 // Add message to sent message list
                 sentMessageList.add(message);
-
+                
+                progressBar.setValue(0);
+                progressBar.setStringPainted(true);
+                progressBar.setMaximum(fileSize);
+                
                 while (true) {
                     // If the next sequence number is outside the window
                     if ((sequenceNumber - windowSize) > lastAckedSequenceNumber) {
@@ -261,7 +283,7 @@ public class SenderWindow extends javax.swing.JFrame {
                 // Send the packet
                 socket.send(sendPacket);
                 System.out.println("Sent: Sequence number = " + sequenceNumber + ", Flag = " + lastMessageFlag);
-
+                progressBar.setValue(sequenceNumber);
 
                 // Process ack
                 while (true) {
@@ -352,6 +374,7 @@ public class SenderWindow extends javax.swing.JFrame {
             double throughput = (double) fileSizeKB / transferTime;
             System.out.println("File size: " + fileSizeKB + "KB, Transfer time: " + transferTime + " seconds. Throughput: " + throughput + "KBps");
             System.out.println("Number of retransmissions: " + retransmissionCounter);
+            flag = false;
         }
     }
     
@@ -406,6 +429,24 @@ public class SenderWindow extends javax.swing.JFrame {
                 new SenderWindow().setVisible(true);
             }
         });
+        
+        while(true){
+            try {
+                System.out.println("Listening...");
+                Thread.sleep(100);
+                if(flag == true) {
+                    try {
+                        createAndSend(host, port);
+                    } catch(IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            
+        }
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -414,6 +455,8 @@ public class SenderWindow extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JTextField portField;
+    private static javax.swing.JProgressBar progressBar;
     // End of variables declaration//GEN-END:variables
 }
