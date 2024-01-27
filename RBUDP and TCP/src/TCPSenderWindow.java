@@ -11,7 +11,7 @@ import javax.swing.JFileChooser;
 
 /**
  *
- * @author Keaglox
+ * @author Keagan
  */
 public class TCPSenderWindow extends javax.swing.JFrame {
 

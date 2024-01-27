@@ -10,6 +10,10 @@ import java.nio.ByteBuffer;
 import java.util.Vector;
 import javax.swing.JFileChooser;
 
+/**
+ *
+ * @author Keagan
+ */
 public class SenderWindow extends javax.swing.JFrame {
     
     static String host;
@@ -183,6 +187,10 @@ public class SenderWindow extends javax.swing.JFrame {
             // Use vector to store sent message.
             Vector <byte[]> sentMessageList = new Vector <byte[]>();
 
+            progressBar.setValue(0);
+            progressBar.setStringPainted(true);
+            progressBar.setMaximum(fileSize);
+            
             for (int i=0; i < fileByteArray.length; i = i+1021 ) {
 
                 // Increment serial number.
@@ -225,10 +233,6 @@ public class SenderWindow extends javax.swing.JFrame {
 
                 // Add message to sent message list
                 sentMessageList.add(message);
-                
-                progressBar.setValue(0);
-                progressBar.setStringPainted(true);
-                progressBar.setMaximum(fileSize);
                 
                 while (true) {
                     // If the next sequence number is outside the window

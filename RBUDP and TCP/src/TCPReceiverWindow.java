@@ -9,7 +9,7 @@ import java.net.Socket;
 
 /**
  *
- * @author Keaglox
+ * @author Keagan
  */
 public class TCPReceiverWindow extends javax.swing.JFrame {
     static String host;

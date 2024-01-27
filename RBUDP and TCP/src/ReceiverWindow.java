@@ -10,7 +10,7 @@ import java.nio.ByteBuffer;
 
 /**
  *
- * @author Keaglox
+ * @author Keagan
  */
 public class ReceiverWindow extends javax.swing.JFrame {
     
