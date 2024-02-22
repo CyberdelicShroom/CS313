@@ -17,7 +17,7 @@ public class Client extends javax.swing.JFrame {
     static int Port;
     static String username;
     /**
-     * Creates new form connect_client
+     * Creates new form Client
      */
     public Client() {
         initComponents();
@@ -152,16 +152,14 @@ public class Client extends javax.swing.JFrame {
         Port = Integer.parseInt(portField.getText());
         username = usernameField.getText();
         try {
-            client = new Socket(hostAddress,Port); // ip address is of localhost because server is running on the same mschine
+            client = new Socket(hostAddress,Port);
             in = new DataInputStream(client.getInputStream());
             out = new DataOutputStream(client.getOutputStream());
 
-            System.out.println(username + " connected to " + hostAddress + " on port " + Port);
-            
             out.writeUTF(username);
-            String msgin_welcome = in.readUTF();
-    //            message_area.setText(message_area.getText() + "\n " + msgin_welcome);
-            message_area.setText(msgin_welcome);
+            String connected_msg = in.readUTF();
+            message_area.setText(connected_msg);
+            
             InputHandler inHandler = new InputHandler();
             Thread t = new Thread(inHandler);
             t.start();

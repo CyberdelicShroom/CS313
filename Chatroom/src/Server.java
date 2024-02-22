@@ -21,7 +21,7 @@ public class Server implements Runnable {
     public void run() {
         try {
             server = new ServerSocket(4000);
-            System.out.println("Serving is running on port 4000");
+            System.out.println("Server is running on port 4000");
             threadPool = Executors.newCachedThreadPool();
             while (!done) {
                 Socket client = server.accept();
@@ -82,7 +82,7 @@ public class Server implements Runnable {
         public String requestUniqueName(String username, DataInputStream in) {
             try {
                 while (clients.contains(username)) {
-                    out.writeUTF("That username is already in use, try another: ");
+                    out.writeUTF("That username is already in use, try entering another by typing it in the message box and sending it: ");
                     username = in.readUTF();
                 }
             } catch (IOException e) {
@@ -130,7 +130,8 @@ public class Server implements Runnable {
                         if (message.startsWith("/name ")) {
                             String[] messageSplit = message.split(" ", 2);
                             String originalName = username;
-                            if (messageSplit.length == 2) {
+                            
+                            if (!messageSplit[1].equals("") && !messageSplit[1].equals(" ")) {
                                 if (clients.contains(messageSplit[1])) {
                                     username = requestUniqueName(messageSplit[1], in);
                                     clients.add(username);
@@ -142,11 +143,10 @@ public class Server implements Runnable {
                                     int index = clients.indexOf(originalName);
                                     clients.remove(index);
                                 }
-                                bCast(originalName + " renamed themself to " + messageSplit[1]);
-                                System.out.println(originalName + " renamed themself to " + messageSplit[1]);
-                                out.writeUTF("Successfully changed username to: " + username);
+                                bCast(originalName + " renamed themself to " + username);
+                                System.out.println(originalName + " renamed themself to " + username);
                             } else {
-                                out.writeUTF("No username provided.");
+                                out.writeUTF("No username provided. Try the command again with a unique username.");
                             }
 
                         } else if (message.startsWith("/quit")) {
